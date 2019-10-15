@@ -8,7 +8,7 @@ Prometheus Ping Exporter is a simple python script which utilize ping to probe e
 - Python 2.x
 
 **Screenshots**
-![alt text](https://raw.githubusercontent.com/frankiexyz/ping-exporter/master/ping.png)
+![alt text](https://raw.githubusercontent.com/isyoon71/ping_exporter/master/example_output.png)
 
 ## Getting Started
 
