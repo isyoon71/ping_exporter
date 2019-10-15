@@ -31,7 +31,7 @@ Prometheus Ping Exporter is a simple python script which utilize ping to probe e
 
 4. Testing The Script
 ```
-# curl "127.0.0.1:8085/?target=8.8.8.8"
+# curl "http://127.0.0.1:8085/probe?target=8.8.8.8&count=5&interval=10"
 ```
 
 ### Running Script On System Startup
@@ -47,7 +47,7 @@ vi /lib/systemd/system/ping_exporter.service
 
 ```
 [Unit]
-Description=Ping Exporter for Prometheus (Created By Frankie)
+Description=Ping Exporter for Prometheus
 After=multi-user.target
 
 [Service]
@@ -80,11 +80,11 @@ Append the following in prometheus's config (Default is prometheus.yml)
     scrape_interval: 60s
     metrics_path: /probe
     params:
-         prot: ['4']
+         count: ['5']
+         interval: ['10']
     static_configs:
       - targets:
-          - www.ifconfig.xyz
-          - www.google.com
+          - 8.8.8.8
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -103,20 +103,11 @@ You might want to add or change the following parameters in params's section to 
 
 ```
     params:
-         # Default Is IPv4, Can Be Changed To IPv6
-         prot: ['4']
-
-         # Ping Packet Size (Default value is 56)
-         size: ['56']
-
-         # Ping Count (Default value is 10 times)
+         # Ping Count (Default value is 5 times)
          count: ['10']
 
-         # Ping Interval (Default value is 500ms)
-         interval: ['500']
-
-         # Source address for ping (System default used if not specified)
-         source: ['10.10.10.10']
+         # Ping Interval (Default value is 8sec)
+         interval: ['10']
 ```
 
 Prometheus configuration example where the job pings a single destination (params:target) but from multiple source addresses (static_config:targets) to determine the quality of each route / path:
@@ -126,9 +117,8 @@ Prometheus configuration example where the job pings a single destination (param
   scrape_interval: 60s
   metrics_path: /probe
   params:
-       prot: ['4']
-       count: ['3']
-       target: ['207.225.112.9']
+       count: ['5']
+       interval: ['10']
   static_configs:
     - targets:
         - 192.168.101.2
